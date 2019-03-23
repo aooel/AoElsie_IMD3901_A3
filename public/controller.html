@@ -2,39 +2,40 @@
 <!DOCTYPE html>
 <html>
     <head>
+       <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script> 
     </head>
     <body>
         <h1>This is the controller client</h1>
-
-        <!-- some very nice color buttons -->
-        <button id="red" style="background-color:red; color:whitesmoke;">RED</button>
-        <button id="green" style="background-color:green; color:whitesmoke;">BLUE</button>
-        <button id="blue" style="background-color:blue; color:whitesmoke;">GREEN</button>
-
-
         <!-- scripts go to bottom if you want them to execute AFTER the rest of the web page renders -->
         <script src="/socket.io/socket.io.js"></script>
-        <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
-
+        
         <a-scene>
-            <a-box id="box" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-            <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-            <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-            <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-            <a-sky color="#ECECEC"></a-sky>
-
-        <a-entity camera look-controls wasd-controls position="0 0.2 0">
-                <a-entity cursor="fuse: true; fuseTimeout: 500"
-                            position="0 0 -1"
-                            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-                            material="color: black; shader: flat">
-                </a-entity>
-        </a-entity>   
-
+                <a-box box1component id="box1" position="-2 2 0" rotation="0 0 0" color=blue></a-box>
+                <a-sphere sphere1component id="sphere1" position="0 2 0" radius="1.25" color="#EF2D5E"></a-sphere>
+                <a-cylinder cyl1component id="cyl1" position="2 2 0" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+                <img id="pink" src="https://img.gs/bbdkhfbzkk/stretch/http://i.imgur.com/1hyyIUi.jpg" crossorigin="anonymous" />
+                <img src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" id="grid" crossorigin="anonymous">
+                <img src="https://img.gs/bbdkhfbzkk/2048x1024,stretch/http://i.imgur.com/WMNH2OF.jpg" id="chrome" crossorigin="anonymous">
+                <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/http://i.imgur.com/WqlqEkq.jpg" crossorigin="anonymous" />        
+    
+                <a-entity
+                geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
+                material="src: #grid; repeat: 10000 10000; transparent: true;metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;"></a-entity>
+                    
+                <a-entity light="color: #ccccff; " visible=""></a-entity>
+                <a-entity light="color: ffaaff;" position="5 5 5"></a-entity>
+                <a-entity light="color: white;" position="-5 5 15"></a-entity>
+                <a-entity light="color: white;"></a-entity>
+                
+                <a-sky src="#sky" rotation="0 -90 0"></a-sky>
+        </a-scene> 
+       
+        
         <script>
             let socket = io();
+            let BOX1 = document.getElementById("box1");
             //default connect event
-            socket.on('connect', function() {
+            socket.on('connect', function() { // dont touch
                 console.log("connected!");
             });
             //let's send some events to the server to pass on. Programmatic telephone game!
@@ -45,15 +46,109 @@
             //https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector 
             //note that querySelector can also be used on elements so that you only search for their children
             //instead of all elements within teh "document"
-            document.querySelector('#red').addEventListener('click', function() {
-                socket.emit('red');
+            
+             //COLOR TO CONTROLLER
+
+            
+
+            //CONTROLLER TO COLOR
+            AFRAME.registerComponent('box1component', {
+                schema: {},
+                init : function() {
+                    const Context_AF = this;
+
+                    Context_AF.el.addEventListener('click', function() {
+                        console.log("click");
+                        Context_AF.changeColor();
+                    });
+                },
+                changeColor : function() {
+                    const Context_AF = this;
+                    console.log("clickkkk");
+                    socket.emit('box1');
+                    console.log("poop");
+                }
             });
-            document.querySelector('#green').addEventListener('click', function() {
-                socket.emit('green');
+
+            AFRAME.registerComponent('sphere1component', {
+                schema: {},
+                init : function() {
+                    const Context_AF = this;
+
+                    Context_AF.el.addEventListener('click', function() {
+                        console.log("click");
+                        Context_AF.changeColor();
+                    });
+                },
+                changeColor : function() {
+                    const Context_AF = this;
+                    console.log("clickkkk");
+                    socket.emit('sphere1');
+
+                }
             });
-            document.querySelector('#blue').addEventListener('click', function() {
-                socket.emit('blue');
+
+            AFRAME.registerComponent('cyl1component', {
+                schema: {},
+                init : function() {
+                    const Context_AF = this;
+
+                    Context_AF.el.addEventListener('click', function() {
+                        console.log("click");
+                        Context_AF.changeColor();
+                    });
+                },
+                changeColor : function() {
+                    const Context_AF = this;
+                    console.log("clickkkk");
+                    socket.emit('cyl1');
+
+                }
             });
+            
+           
+
+            // document.querySelector('#red').addEventListener('click', function() {
+            //     socket.emit('red');
+            // });
+            // document.querySelector('#green').addEventListener('click', function() {
+            //     socket.emit('green');
+            // });
+            // document.querySelector('#blue').addEventListener('click', function() {
+            //     socket.emit('blue');
+            // });
         </script>
+        <a-scene>
+            <a-box box1component id="box1" position="-2 0.5 -5" rotation="0 0 0" color=blue></a-box>
+            <a-sphere sphere1component id="sphere1" position="0 0.5 -5" radius="0.5" color="#EF2D5E"></a-sphere>
+            <a-cylinder cyl1component id="cyl1" position="2 0.5 -5" radius="0.5" height="1" color="#FFC65D"></a-cylinder>
+            
+            <img id="pink" src="https://img.gs/bbdkhfbzkk/stretch/http://i.imgur.com/1hyyIUi.jpg" crossorigin="anonymous" />
+            <img src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" id="grid" crossorigin="anonymous">
+            <img src="https://img.gs/bbdkhfbzkk/2048x1024,stretch/http://i.imgur.com/WMNH2OF.jpg" id="chrome" crossorigin="anonymous">
+            <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/http://i.imgur.com/WqlqEkq.jpg" crossorigin="anonymous" />        
+
+            <a-entity
+            geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
+            material="src: #grid; repeat: 10000 10000; transparent: true;metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;"></a-entity>
+                
+            <a-entity light="color: #ccccff; " visible=""></a-entity>
+            <a-entity light="color: ffaaff;" position="5 5 5"></a-entity>
+            <a-entity light="color: white;" position="-5 5 15"></a-entity>
+            <a-entity light="color: white;"></a-entity>
+            
+            <a-sky src="#sky" rotation="0 -90 0"></a-sky>
+
+            <a-entity position="0 0.2 0 " camera look-controls wasd-controls>
+                    <!-- if you add rayOrigin:mouse to teh cursor properties selection happens where you click -->
+                    <a-entity   cursor="fuse:true; fuseTimeout:500; rayOrigin:mouse;"></a-entity>
+                       
+                   <a-entity  cursor="fuse:false; fuseTimeout:500;"
+                                position="0 0 -1"
+                                geometry="primitive:ring; radiusInner:0.02; radiusOuter:0.03;"
+                                material="shader:flat; color:black;">            
+                    </a-entity> 
+         </a-scene> 
+
     </body>
 </html>

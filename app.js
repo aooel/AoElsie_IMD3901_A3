@@ -25,23 +25,22 @@ socketIO.on('connection', function(socket) {
         console.log(socket.id + ' has disconnected');
     });
 
-    //custom events
-    //socket = one client
-    //socketIO.sockets = all clients
-    socket.on('red', function(data) {
+    // custom events
+    // socket = one client
+    // socketIO.sockets = all clients
+    socket.on('box1', function(data) {
         console.log('red event heard');
-        socketIO.sockets.emit('color_change', {r:255, g:0, b:0});
-    });
-
-    socket.on('green', function(data) {
-        console.log('green event heard');
         socketIO.sockets.emit('color_change', {r:0, g:255, b:0});
     });
-
-    socket.on('blue', function(data) {
-        console.log('blue event heard');
-        socketIO.sockets.emit('color_change', {r:0, g:0, b:255});
+    socket.on('sphere1', function(data) {
+        console.log('red event heard');
+        socketIO.sockets.emit('color_change1', {r:0, g:255, b:0});
     });
+    socket.on('cyl1', function(data) {
+        console.log('red event heard');
+        socketIO.sockets.emit('color_change2', {r:0, g:255, b:0});
+    });
+
 });
 
 //finally, start server
